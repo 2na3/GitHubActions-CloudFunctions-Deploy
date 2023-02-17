@@ -1,0 +1,36 @@
+name: Deploy Cloud Functions
+on:
+  # 手動or特定ブランチにPush時に実行
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  job_id:
+    runs-on: 'ubuntu-latest'
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+    - uses: 'actions/checkout@v3'
+
+    - id: 'auth'
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v1'
+      with:
+        credentials_json: '${{ secrets.GCP_CREDENTIAL }}'
+
+    - id: 'deploy'
+      name: 'Deploy Cloud Functions'
+      uses: 'google-github-actions/deploy-cloud-functions@v1'
+      with:
+        name: 'test-githubactions-deploy'
+        runtime: 'python38'
+        region: asia-northeast1
+        entry_point: hello_world
+
+    # Example of using the output
+    - id: 'test'
+      run: 'curl "${{ steps.deploy.outputs.url }}"'
