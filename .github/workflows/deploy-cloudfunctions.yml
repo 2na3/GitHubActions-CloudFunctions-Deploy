@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - main
+      - develop
 
 jobs:
   job_id:
@@ -26,7 +26,7 @@ jobs:
       name: 'Deploy Cloud Functions'
       uses: 'google-github-actions/deploy-cloud-functions@v1'
       with:
-        name: 'test-githubactions-deploy'
+        name: 'test-githubactions-deploy-develop'
         runtime: 'python38'
         region: asia-northeast1
         entry_point: hello_world
