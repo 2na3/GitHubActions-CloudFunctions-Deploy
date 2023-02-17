@@ -30,6 +30,7 @@ jobs:
         runtime: 'python38'
         region: asia-northeast1
         entry_point: hello_world
+        service_account_email: gha-cloudfunctions-deploy@${{ secrets.PROJECT_ID }}.iam.gserviceaccount.com
 
     # Example of using the output
     - id: 'test'
