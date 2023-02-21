@@ -2,12 +2,15 @@ name: Deploy Cloud Functions
 on:
   # 手動or特定ブランチにPush時に実行
   workflow_dispatch:
-  push:
+  pull_request:
+    types:
+      - closed
     branches:
       - main
 
 jobs:
-  job_id:
+  deploy-job:
+    if: github.event.pull_request.merged == true
     runs-on: 'ubuntu-latest'
     permissions:
       contents: 'read'
