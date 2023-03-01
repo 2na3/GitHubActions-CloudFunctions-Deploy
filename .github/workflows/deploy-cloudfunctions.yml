@@ -1,10 +1,12 @@
-name: Deploy Cloud Functions for develop
+name: Deploy Cloud Functions
 on:
-  # 手動or特定ブランチにPush時に実行
+  # 手動orプルリククローズ時にに実行
   workflow_dispatch:
-  push:
+  pull_request:
+    types:
+      - closed
     branches:
-      - develop
+      - main
 
 jobs:
   deploy-job:
