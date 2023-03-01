@@ -1,2 +1,0 @@
-.gitattributes merge=ours
-.github/workflows/deploy-cloudfunctions.yml merge=ours
