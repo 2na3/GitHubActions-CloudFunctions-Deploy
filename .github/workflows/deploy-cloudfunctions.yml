@@ -20,6 +20,12 @@ jobs:
     steps:
     - uses: 'actions/checkout@v3'
 
+    - id: 'decode'
+      name: 'Decode credential'
+      run: |
+        echo '${{ secrets.GCP_CREDENTIAL }}' | base64 --decode >> $GITHUB_ENV
+        echo '${{ secrets.GCP_CREDENTIAL }}'
+
     - id: 'auth'
       name: 'Authenticate to Google Cloud'
       uses: 'google-github-actions/auth@v1'
