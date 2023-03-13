@@ -20,7 +20,7 @@ jobs:
       name: 'Decode credential'
       run: |
         echo '${{ secrets.GCP_CREDENTIAL }}' | base64 --decode >> $GITHUB_ENV
-        echo '${{ env.GCP_CREDENTIAL }}'
+        echo '${{ secrets.GCP_CREDENTIAL }}'
 
     - id: 'auth'
       name: 'Authenticate to Google Cloud'
