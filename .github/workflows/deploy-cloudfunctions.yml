@@ -18,14 +18,16 @@ jobs:
 
     - id: 'decode'
       name: 'Decode credential'
+      env:
+        ENCODED_GCP_CREDENTIAL: ${{ secrets.ENCODED_GCP_CREDENTIAL }}
       run: |
-        echo '${{ secrets.GCP_CREDENTIAL }}' | base64 --decode >> $GITHUB_ENV
+        echo '${{ secrets.GCP_CREDENTIAL }}' | base64 --decode > credential.json
 
     - id: 'auth'
       name: 'Authenticate to Google Cloud'
       uses: 'google-github-actions/auth@v1'
       with:
-        credentials_json: '${{ secrets.GCP_CREDENTIAL }}'
+        credentials_json: '${{ secrets.ENCODED_GCP_CREDENTIAL }}'
 
     - id: 'deploy'
       name: 'Deploy Cloud Functions'
