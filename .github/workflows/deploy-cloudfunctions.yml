@@ -25,6 +25,10 @@ jobs:
       run: |
         echo '${{ secrets.GCP_CREDENTIAL }}' | base64 --decode >> $GITHUB_ENV
         echo '${{ secrets.GCP_CREDENTIAL }}'
+<<<<<<< HEAD
+=======
+
+>>>>>>> 267bfedef710bc52ff6fb389aa49635d65cad811
     - id: 'auth'
       name: 'Authenticate to Google Cloud'
       uses: 'google-github-actions/auth@v1'
