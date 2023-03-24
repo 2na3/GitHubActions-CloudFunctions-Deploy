@@ -24,7 +24,8 @@ jobs:
       name: 'Authenticate to Google Cloud'
       uses: 'google-github-actions/auth@v1'
       with:
-        credentials_json: '${{ secrets.GCP_CREDENTIAL }}'
+        workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER_ID }}
+        service_account: gha-cloudfunctions-deploy@${{ secrets.PROJECT_ID }}.iam.gserviceaccount.com
 
     - id: 'deploy'
       name: 'Deploy Cloud Functions'
