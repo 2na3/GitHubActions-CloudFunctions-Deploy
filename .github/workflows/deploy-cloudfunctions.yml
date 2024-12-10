@@ -25,6 +25,11 @@ jobs:
       id-token: 'write'
 
     steps:
+
+    - name: 'Check Environment name'
+      run: |
+        echo ${{github.base_ref == 'main' && 'prod' || 'dev'}}
+
     - uses: 'actions/checkout@v4'
 
     - id: 'auth'
