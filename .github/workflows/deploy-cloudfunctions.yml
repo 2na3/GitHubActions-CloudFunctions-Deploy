@@ -28,35 +28,35 @@ jobs:
       contents: 'read'
       id-token: 'write'
 
-    steps:
-    - uses: 'actions/checkout@v4'
+    # steps:
+    # - uses: 'actions/checkout@v4'
 
-    - id: 'auth'
-      name: 'Authenticate to Google Cloud'
-      uses: 'google-github-actions/auth@v2'
-      with:
-        workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER_ID }}
-        service_account: gha-cloudfunctions-deploy@${{ vars.PROJECT_ID }}.iam.gserviceaccount.com
+    # - id: 'auth'
+    #   name: 'Authenticate to Google Cloud'
+    #   uses: 'google-github-actions/auth@v2'
+    #   with:
+    #     workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER_ID }}
+    #     service_account: gha-cloudfunctions-deploy@${{ vars.PROJECT_ID }}.iam.gserviceaccount.com
 
-    - name: 'Set up Cloud SDK'
-      uses: 'google-github-actions/setup-gcloud@v1'
+    # - name: 'Set up Cloud SDK'
+    #   uses: 'google-github-actions/setup-gcloud@v1'
 
-    - name: 'Deploy Cloud Functions gen2 Using gcloud command'
-      run: >-
-        gcloud functions deploy ${{ vars.CLOUD_FUNCTIONS_ID }}
-        --gen2
-        --runtime=python312
-        --region=asia-northeast1
-        --source=./test-githubactions-deploy
-        --entry-point=hello_world
-        --timeout=500
-        --cpu=1
-        --memory=2Gi
-        --concurrency=5
-        --trigger-http
-        --no-allow-unauthenticated
-        --run-service-account gha-cloudfunctions-deploy@${{ vars.PROJECT_ID }}.iam.gserviceaccount.com
+    # - name: 'Deploy Cloud Functions gen2 Using gcloud command'
+    #   run: >-
+    #     gcloud functions deploy ${{ vars.CLOUD_FUNCTIONS_ID }}
+    #     --gen2
+    #     --runtime=python312
+    #     --region=asia-northeast1
+    #     --source=./test-githubactions-deploy
+    #     --entry-point=hello_world
+    #     --timeout=500
+    #     --cpu=1
+    #     --memory=2Gi
+    #     --concurrency=5
+    #     --trigger-http
+    #     --no-allow-unauthenticated
+    #     --run-service-account gha-cloudfunctions-deploy@${{ vars.PROJECT_ID }}.iam.gserviceaccount.com
 
-    # Example of using the output
-    - id: 'test'
-      run: 'curl "${{ steps.deploy.outputs.url }}"'
+    # # Example of using the output
+    # - id: 'test'
+    #   run: 'curl "${{ steps.deploy.outputs.url }}"'
