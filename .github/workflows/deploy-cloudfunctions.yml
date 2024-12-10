@@ -16,10 +16,8 @@ jobs:
     # マージが確認できたら　or手動で呼び出しされたら以下ジョブを実行
     if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
     runs-on: 'ubuntu-latest'
-    # steps:
-    #   - run: |
-    #       echo ${{github.base_ref == 'main' && 'prod' || 'dev'}}
-    environment: ${{github.base_ref == 'main' && 'prod' || 'dev'}}
+    environment:
+      name: ${{github.base_ref == 'main' && 'prod' || 'dev'}}
     permissions:
       contents: 'read'
       id-token: 'write'
