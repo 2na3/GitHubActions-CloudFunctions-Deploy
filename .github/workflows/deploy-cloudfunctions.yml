@@ -54,7 +54,3 @@ jobs:
         --trigger-http
         --no-allow-unauthenticated
         --run-service-account gha-cloudfunctions-deploy@${{ vars.PROJECT_ID }}.iam.gserviceaccount.com
-
-    # Example of using the output
-    - id: 'test'
-      run: 'curl "${{ steps.deploy.outputs.url }}"'
