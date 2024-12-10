@@ -1,38 +1,58 @@
 name: Deploy Cloud Functions
 on:
-  # 手動or特定ブランチにPush時に実行
+  # 手動orプルリククローズ時にに実行
   workflow_dispatch:
-  push:
+  pull_request:
+    types:
+      - closed
     branches:
+      - main
       - develop
+    paths:
+      - 'test-githubactions-deploy/**'
 
 jobs:
   deploy-job:
+    # マージが確認できたら　or手動で呼び出しされたら以下ジョブを実行
+    if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
     runs-on: 'ubuntu-latest'
+    environment: >-
+      ${{
+        github.base_ref == 'main' && 'prod' ||
+        'dev'
+      }}
     permissions:
       contents: 'read'
       id-token: 'write'
 
     steps:
-    - uses: 'actions/checkout@v3'
+    - uses: 'actions/checkout@v4'
 
     - id: 'auth'
       name: 'Authenticate to Google Cloud'
-      uses: 'google-github-actions/auth@v1'
+      uses: 'google-github-actions/auth@v2'
       with:
         workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER_ID }}
-        service_account: gha-cloudfunctions-deploy@${{ secrets.PROJECT_ID }}.iam.gserviceaccount.com
+        service_account: gha-cloudfunctions-deploy@${{ var.PROJECT_ID }}.iam.gserviceaccount.com
 
-    - id: 'deploy'
-      name: 'Deploy Cloud Functions'
-      uses: 'google-github-actions/deploy-cloud-functions@v1'
-      with:
-        name: 'test-githubactions-deploy-develop'
-        runtime: 'python38'
-        region: asia-northeast1
-        entry_point: hello_world
-        service_account_email: gha-cloudfunctions-deploy@${{ secrets.PROJECT_ID }}.iam.gserviceaccount.com
-        source_dir: ./test-githubactions-deploy
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v1'
+
+    - name: 'Deploy Cloud Functions gen2 Using gcloud command'
+      run: >-
+        gcloud functions deploy ${{ vars.CLOUD_FUNCTIONS_ID }}
+        --gen2
+        --runtime=python312
+        --region=asia-northeast1
+        --source=./test-githubactions-deploy
+        --entry-point=hello_world
+        --timeout=500
+        --cpu=1
+        --memory=2Gi
+        --concurrency=5
+        --trigger-http
+        --no-allow-unauthenticated
+        --run-service-account gha-cloudfunctions-deploy@${{ vars.PROJECT_ID }}.iam.gserviceaccount.com
 
     # Example of using the output
     - id: 'test'
