@@ -1,7 +1,6 @@
 name: Deploy Cloud Functions
 on:
-  # 手動orプルリククローズ時にに実行
-  workflow_dispatch:
+  # プルリククローズ時にに実行
   pull_request:
     types:
       - closed
@@ -13,8 +12,8 @@ on:
 
 jobs:
   deploy-job:
-    # マージが確認できたら　or手動で呼び出しされたら以下ジョブを実行
-    if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
+    # マージが確認できたら以下ジョブを実行
+    if: github.event.pull_request.merged == true
     runs-on: 'ubuntu-latest'
     environment:
       name: ${{github.base_ref == 'main' && 'prod' || 'dev'}}
