@@ -1,6 +1,7 @@
 name: Deploy Cloud Functions
 on:
-  # プルリククローズ時にに実行
+  # 手動orプルリククローズ時にに実行
+  workflow_dispatch:
   pull_request:
     types:
       - closed
