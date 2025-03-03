@@ -13,8 +13,8 @@ on:
 
 jobs:
   deploy-job:
-    # マージが確認できたら以下ジョブを実行
-    if: github.event.pull_request.merged == true
+    # マージが確認できたらor手動でワークフローが実行されたら以下ジョブを実行
+    if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
     runs-on: 'ubuntu-latest'
     environment:
       name: ${{github.base_ref == 'main' && 'prod' || 'dev'}}
